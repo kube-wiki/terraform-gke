@@ -21,14 +21,3 @@ terraform init
 ```
 terraform apply
 ```
-
-### Setup new cluster (pre-defined)
-
-```
-terraform apply \
-  -var 'zone=europe-north1-a' \
-  -var 'machine_type=n1-standard-1' \
-  -var 'node_count=3' \
-  -var 'disk_size_gb=50' \
-  -var 'cluster_name=bumblebee'
-```
