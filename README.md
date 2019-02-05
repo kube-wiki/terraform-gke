@@ -25,3 +25,5 @@ terraform apply \
   -var 'disk_size_gb=50' \
   -var 'cluster_name=bumblebee'
 ```
+
+First commit.
