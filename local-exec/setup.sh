@@ -1,7 +1,7 @@
 #!/bin/bash
 
-gcloud container clusters get-credentials $1 \
-    --zone $2 \
+gcloud beta container clusters get-credentials $1 \
+    --region $2 \
     --project $3
 
 kubectl create ns tiller

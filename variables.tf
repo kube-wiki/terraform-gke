@@ -1,23 +1,27 @@
-variable "project" {
-  description = "kube-wiki-staging"
+variable "cluster_name" {
+  default = "kube-wiki-staging-cluster"
 }
 
-variable "cluster_name" {
-  description = "kube-wiki Staging"
+variable "project" {
+  default = "kube-wiki-staging"
+}
+
+variable "region" {
+  default = "europe-north1"
 }
 
 variable "zone" {
-  description = "europe-north1-a"
+  default = "europe-north1-a"
 }
 
-variable "node_count" {
-  description = 1
+variable "min_node_count" {
+  default = 1
+}
+
+variable "max_node_count" {
+  default = 1
 }
 
 variable "machine_type" {
-  description = "n1-standard-2"
-}
-
-variable "disk_size_gb" {
-  description = 50
+  default = "n1-standard-2"
 }

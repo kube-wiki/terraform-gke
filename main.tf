@@ -8,15 +8,30 @@ resource "google_compute_address" "ip" {
 }
 
 resource "google_container_cluster" "cluster" {
-  name                      = "${var.cluster_name}"
+  provider                  = "google-beta"
+  name                      = "${terraform.workspace}"
   project                   = "${var.project}"
-  zone                      = "${var.zone}"
-  min_master_version        = "${data.google_container_engine_versions.versions.latest_master_version}"
-  node_version              = "${data.google_container_engine_versions.versions.latest_node_version}"
+  region                    = "${var.region}"
+  min_master_version        = "1.11.6-gke.2"
   remove_default_node_pool  = true
 
+  timeouts {
+    create = "30m"
+    update = "30m"
+    delete = "30m"
+  }
+
+  ip_allocation_policy {
+    create_subnetwork = true
+  }
+
+  master_auth {
+    username = ""
+    password = ""
+  }
+
   lifecycle {
-    ignore_changes = [
+    ignore_changes  = [
       "network",
       "node_pool"
     ]
@@ -25,19 +40,25 @@ resource "google_container_cluster" "cluster" {
   node_pool {
     name = "default-pool"
   }
+
+  maintenance_policy {
+    daily_maintenance_window {
+      start_time = "01:00"
+    }
+  }
 }
 
-resource "google_container_node_pool" "node_pool" {
-  name        = "primary-pool"
-  project     = "${var.project}"
-  cluster     = "${google_container_cluster.cluster.name}"
-  zone        = "${var.zone}"
-  node_count  = "${var.node_count}"
+resource "google_container_node_pool" "node_pool_updated" {
+  provider            = "google-beta"
+  project             = "${var.project}"
+  cluster             = "${google_container_cluster.cluster.name}"
+  region              = "${var.region}"
+  initial_node_count  = 1
 
   node_config {
-    machine_type  = "${var.machine_type}"
-    disk_size_gb  = "${var.disk_size_gb}"
-    disk_type     = "pd-ssd"
+    machine_type  = "n1-standard-1"
+    disk_size_gb  = 50
+    //    disk_type     = "pd-ssd"
 
     # https://developers.google.com/identity/protocols/googlescopes
     oauth_scopes = [
@@ -56,8 +77,8 @@ resource "google_container_node_pool" "node_pool" {
   }
 
   autoscaling {
-    min_node_count  = "${var.node_count}"
-    max_node_count  = "${var.node_count + var.node_count}"
+    min_node_count  = 1
+    max_node_count  = 1
   }
 
   provisioner "local-exec" {
