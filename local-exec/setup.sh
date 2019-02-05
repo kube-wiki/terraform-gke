@@ -8,24 +8,25 @@ kubectl create ns tiller
 kubectl create -f ./local-exec/setup.yaml
 
 helm init \
-    --service-account tiller \
-    --tiller-namespace tiller \
-    --wait
+	--service-account tiller \
+	--tiller-namespace tiller \
+	--wait
 
-# Install defaults
-helm install \
-    --namespace cert-manager \
-    --tiller-namespace tiller \
-    --name cert-manager \
-    stable/cert-manager
-
+# Install ingress
+helm fetch --version 0.30.0 stable/nginx-ingress --untar
 helm install \
     --namespace nginx-ingress \
     --tiller-namespace tiller \
-    --name nginx \
     --set controller.service.loadBalancerIP=$4 \
-    --set controller.service.externalTrafficPolicy=Local \
-    --set controller.ingressClass=external \
-    --set controller.stats.enabled=true \
-    --set controller.metrics.enabled=true \
-    stable/nginx-ingress
+    -f nginx-ingress/values.yaml \
+    -f ./scripts/nginx-ingress-values.yaml \
+    --name nginx-ingress \
+    ./nginx-ingress
+rm -rf nginx-ingress
+
+helm install \
+	--namespace cert-manager \
+	--tiller-namespace tiller \
+	--name cert-manager \
+	--version v0.4.1 \
+	stable/cert-manager

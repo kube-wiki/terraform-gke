@@ -9,7 +9,7 @@ resource "google_compute_address" "ip" {
 
 resource "google_container_cluster" "cluster" {
   provider                  = "google-beta"
-  name                      = "${terraform.workspace}"
+  name                      = "${var.cluster_name}"
   project                   = "${var.project}"
   region                    = "${var.region}"
   min_master_version        = "1.11.6-gke.2"
@@ -73,7 +73,7 @@ resource "google_container_node_pool" "node_pool_updated" {
 
   management {
     auto_repair   = true
-    auto_upgrade  = false
+    auto_upgrade  = true
   }
 
   autoscaling {
