@@ -30,3 +30,5 @@ helm install \
 	--name cert-manager \
 	--version v0.4.1 \
 	stable/cert-manager
+
+kubectl apply -f ./scripts/cluster-issuer-staging.yaml
