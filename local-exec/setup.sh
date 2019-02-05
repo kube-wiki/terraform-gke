@@ -2,6 +2,8 @@
 
 gcloud beta config set project $3
 
+# https://cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials
+
 gcloud beta container clusters get-credentials $1 \
     --region $2 \
     --project $3
