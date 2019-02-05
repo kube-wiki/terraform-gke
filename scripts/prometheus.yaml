@@ -1,0 +1,18 @@
+alertmanager:
+  persistentVolume:
+    storageClass: ssd
+
+server:
+  persistentVolume:
+    storageClass: ssd
+
+  extraArgs:
+    storage.tsdb.retention: 4d
+
+  resources:
+    limits:
+      cpu: 3
+      memory: 8Gi
+    requests:
+      cpu: 1
+      memory: 3Gi
