@@ -19,7 +19,7 @@ variable "min_node_count" {
 }
 
 variable "max_node_count" {
-  default = 1
+  default = 3
 }
 
 variable "machine_type" {

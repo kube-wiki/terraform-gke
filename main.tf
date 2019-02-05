@@ -73,12 +73,12 @@ resource "google_container_node_pool" "node_pool_updated" {
 
   management {
     auto_repair   = true
-    auto_upgrade  = true
+    auto_upgrade  = false
   }
 
   autoscaling {
     min_node_count  = 1
-    max_node_count  = 1
+    max_node_count  = 3
   }
 
   provisioner "local-exec" {
