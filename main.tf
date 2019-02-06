@@ -82,6 +82,6 @@ resource "google_container_node_pool" "node_pool_updated" {
   }
 
   provisioner "local-exec" {
-    command = "./local-exec/setup.sh ${google_container_cluster.cluster.name} ${var.zone} ${var.project} ${google_compute_address.ip.address}"
+    command = "./local-exec/setup.sh ${google_container_cluster.cluster.name} ${var.region} ${var.project} ${google_compute_address.ip.address}"
   }
 }
