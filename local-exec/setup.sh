@@ -41,20 +41,20 @@ helm install \
 kubectl apply -f ./scripts/cluster-issuer-staging.yaml
 
 # Install phpMyAdmin
-helm install \
-    --namespace phpmyadmin \
-    --tiller-namespace tiller \
-    --name phpmyadmin \
-    --version 1.3.0 \
-    stable/phpmyadmin
+#helm install \
+#    --namespace phpmyadmin \
+#    --tiller-namespace tiller \
+#    --name phpmyadmin \
+#    --version 1.3.0 \
+#    stable/phpmyadmin
 
 # Install Prometheus
-helm fetch --version 7.4.1 stable/prometheus --untar
-helm install \
-    --namespace prometheus \
-    --tiller-namespace tiller \
-    -f prometheus/values.yaml \
-    -f ./scripts/prometheus.yaml \
-    --name prometheus \
-    ./prometheus
-rm -rf prometheus
+#helm fetch --version 7.4.1 stable/prometheus --untar
+#helm install \
+#    --namespace prometheus \
+#    --tiller-namespace tiller \
+#    -f prometheus/values.yaml \
+#    -f ./scripts/prometheus.yaml \
+#    --name prometheus \
+#    ./prometheus
+#rm -rf prometheus
