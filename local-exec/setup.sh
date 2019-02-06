@@ -1,7 +1,4 @@
 #!/bin/bash
-
-gcloud beta config set project $3
-
 # https://cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials
 
 gcloud beta container clusters get-credentials $1 \
@@ -58,10 +55,3 @@ helm install \
     --name prometheus \
     ./prometheus
 rm -rf prometheus
-
-# Install GoCD
-helm install \
-    --namespace gocd \
-    --tiller-namespace tiller \
-    --name gocd-app \
-    stable/gocd
