@@ -58,10 +58,3 @@ helm install \
     --name prometheus \
     ./prometheus
 rm -rf prometheus
-
-# Install GoCD
-helm install \
-    --namespace gocd \
-    --tiller-namespace tiller \
-    --name gocd-app \
-    stable/gocd
