@@ -25,3 +25,7 @@ variable "max_node_count" {
 variable "machine_type" {
   default = "n1-standard-2"
 }
+
+variable "bucket" {
+  default = "kube-wiki-tf-state"
+}

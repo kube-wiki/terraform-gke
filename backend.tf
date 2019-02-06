@@ -1,7 +1,7 @@
 terraform {
   backend "gcs" {
-    bucket  = "kube-wiki-tf-state"
+    bucket  = "${var.bucket}"
     prefix  = "terraform/state"
-    project = "kube-wiki-staging"
+    project = "${var.project}"
   }
 }
