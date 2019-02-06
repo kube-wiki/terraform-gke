@@ -1,14 +1,14 @@
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt-staging
+  name: letsencrypt-prod
   namespace: cert-manager
 spec:
   acme:
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    server: https://acme-v02.api.letsencrypt.org/directory
     email: hello@kube.wiki
     privateKeySecretRef:
-      name: letsencrypt-staging
+      name: letsencrypt-prod
     dns01:
       providers:
         - name: clouddns
@@ -18,4 +18,4 @@ spec:
               name: clouddns-service-account
               key: service-account
             # The project in which to update the DNS zone
-            project: kube-wiki-staging
+            project: hello-wiki-staging
