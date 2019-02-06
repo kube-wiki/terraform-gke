@@ -1,5 +1,10 @@
-resource "google_compute_address" "default" {
-  name = "kube-wiki"
+data "google_container_engine_versions" "versions" {
+  zone = "${var.zone}"
+}
+
+resource "google_compute_address" "ip" {
+  name    = "${var.cluster_name}-ip"
+  project = "${var.project}"
 }
 
 resource "google_container_cluster" "cluster" {
@@ -7,7 +12,7 @@ resource "google_container_cluster" "cluster" {
   name                      = "${var.cluster_name}"
   project                   = "${var.project}"
   region                    = "${var.region}"
-  min_master_version        = "1.11.2-gke.15"
+  min_master_version        = "1.11.6-gke.2"
   remove_default_node_pool  = true
 
   timeouts {
@@ -46,14 +51,14 @@ resource "google_container_cluster" "cluster" {
 resource "google_container_node_pool" "node_pool_updated" {
   provider            = "google-beta"
   project             = "${var.project}"
-  cluster             = "${terraform.workspace}"
+  cluster             = "${google_container_cluster.cluster.name}"
   region              = "${var.region}"
   initial_node_count  = 1
 
   node_config {
     machine_type  = "n1-standard-1"
     disk_size_gb  = 50
-    disk_type     = "pd-ssd"
+    //    disk_type     = "pd-ssd"
 
     # https://developers.google.com/identity/protocols/googlescopes
     oauth_scopes = [
@@ -68,15 +73,15 @@ resource "google_container_node_pool" "node_pool_updated" {
 
   management {
     auto_repair   = true
-    auto_upgrade  = false
+    auto_upgrade  = true
   }
 
   autoscaling {
     min_node_count  = 1
-    max_node_count  = 3
+    max_node_count  = 1
   }
 
   provisioner "local-exec" {
-    command = "./scripts/setup.sh ${google_container_cluster.cluster.name} ${var.region} ${var.project} ${google_compute_address.default.address}"
+    command = "./local-exec/setup.sh ${google_container_cluster.cluster.name} ${var.zone} ${var.project} ${google_compute_address.ip.address}"
   }
 }

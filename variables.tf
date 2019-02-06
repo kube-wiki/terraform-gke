@@ -3,7 +3,7 @@ variable "cluster_name" {
 }
 
 variable "project" {
-  default = ""
+  default = "kube-wiki-staging"
 }
 
 variable "region" {
@@ -11,7 +11,7 @@ variable "region" {
 }
 
 variable "zone" {
-  default = "a"
+  default = "europe-north1-a"
 }
 
 variable "min_node_count" {
@@ -19,7 +19,7 @@ variable "min_node_count" {
 }
 
 variable "max_node_count" {
-  default = 3
+  default = 1
 }
 
 variable "machine_type" {

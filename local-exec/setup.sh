@@ -1,11 +1,18 @@
 #!/bin/bash
 
+gcloud beta config set project $3
+
+# https://cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials
+
 gcloud beta container clusters get-credentials $1 \
     --region $2 \
     --project $3
 
 kubectl create ns tiller
-kubectl create -f ./scripts/setup.yaml
+kubectl create -f ./local-exec/setup.yaml
+
+helm repo add stable https://kubernetes-charts.storage.googleapis.com
+helm repo update
 
 helm init \
 	--service-account tiller \
@@ -31,4 +38,30 @@ helm install \
 	--version v0.4.1 \
 	stable/cert-manager
 
-kubectl apply -f ./scripts/clusterissuer-staging.yaml
+kubectl apply -f ./scripts/cluster-issuer-staging.yaml
+
+# Install phpMyAdmin
+helm install \
+    --namespace phpmyadmin \
+    --tiller-namespace tiller \
+    --name phpmyadmin \
+    --version 1.3.0 \
+    stable/phpmyadmin
+
+# Install Prometheus
+helm fetch --version 7.4.1 stable/prometheus --untar
+helm install \
+    --namespace prometheus \
+    --tiller-namespace tiller \
+    -f prometheus/values.yaml \
+    -f ./scripts/prometheus.yaml \
+    --name prometheus \
+    ./prometheus
+rm -rf prometheus
+
+# Install GoCD
+helm install \
+    --namespace gocd \
+    --tiller-namespace tiller \
+    --name gocd-app \
+    stable/gocd
