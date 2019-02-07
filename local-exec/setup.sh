@@ -40,6 +40,13 @@ helm install \
 
 kubectl apply -f ./scripts/cluster-issuer-staging.yaml
 
+# Install Concourse CI
+#helm install \
+#    --namespace concourse-ci \
+#    --tiller-namespace tiller \
+#    --name concourse-ci \
+#    stable/concourse
+
 # Install phpMyAdmin
 #helm install \
 #    --namespace phpmyadmin \
