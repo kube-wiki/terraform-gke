@@ -20,6 +20,7 @@ helm init \
 	--wait
 
 # Install nginx-ingress
+helm fetch --version 0.30.0 stable/nginx-ingress --untar
 helm install \
     --namespace nginx-ingress \
     --tiller-namespace tiller \
@@ -27,8 +28,8 @@ helm install \
     -f nginx-ingress/values.yaml \
     -f ./scripts/nginx-ingress-values.yaml \
     --name nginx-ingress \
-    --version 0.30.0 \
-    stable/nginx-ingress
+    ./nginx-ingress
+rm -rf nginx-ingress
 
 # Install cert-manager
 helm install \
