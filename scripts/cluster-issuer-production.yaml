@@ -1,0 +1,21 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-production
+  namespace: cert-manager
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: hello@kube.wiki
+    privateKeySecretRef:
+      name: letsencrypt-production
+    dns01:
+      providers:
+        - name: clouddns
+          clouddns:
+            # A secretKeyRef to a google cloud json service account
+            serviceAccountSecretRef:
+              name: clouddns-service-account
+              key: service-account
+            # The project in which to update the DNS zone
+            project: kube-wiki-production
