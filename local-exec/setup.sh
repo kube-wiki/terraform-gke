@@ -19,8 +19,7 @@ helm init \
 	--tiller-namespace tiller \
 	--wait
 
-# Install ingress
-helm fetch --version 0.30.0 stable/nginx-ingress --untar
+# Install nginx-ingress
 helm install \
     --namespace nginx-ingress \
     --tiller-namespace tiller \
@@ -28,9 +27,10 @@ helm install \
     -f nginx-ingress/values.yaml \
     -f ./scripts/nginx-ingress-values.yaml \
     --name nginx-ingress \
-    ./nginx-ingress
-rm -rf nginx-ingress
+    --version 0.30.0 \
+    stable/nginx-ingress
 
+# Install cert-manager
 helm install \
 	--namespace cert-manager \
 	--tiller-namespace tiller \
@@ -39,3 +39,4 @@ helm install \
 	stable/cert-manager
 
 kubectl apply -f ./scripts/cluster-issuer-staging.yaml
+kubectl apply -f ./scripts/cluster-issuer-production.yaml
